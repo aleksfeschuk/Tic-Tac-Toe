@@ -45,4 +45,31 @@ function startGame() {
 }
 
 
+function createBoard() { //This function creates the game board 
+    gameBoard.innerHTML = ""; // Clean the playing field before creating it
+    boardState = [...startCells]; // Update the status of the game
+
+    startCells.forEach((_, index) => {
+        cellElement = document.createElement('div');
+        cellElement.classList.add('square');
+        cellElement.dataset.index = index;
+        cellElement.addEventListener("click", handleClick, { once: true });
+        gameBoard.append(cellElement);
+    });
+}
+
+
+function handleClick(e) { // This function is called when you click on a cell and implements the basic logic of the game.
+    if(!gameActive) return;
+
+    const cell = e.target;
+    const index = cell.dataset.index;
+
+    placeSymbol(cell, index);
+
+    if (gameActive && vsComputerCheckbox.checked && currentPlayer === "cross") {
+        setTimeout(computerMove, 1000);
+    }
+}
+
 
