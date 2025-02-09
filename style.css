@@ -162,6 +162,39 @@ h1 {
     background-color: #218838;
 }
 
+#result {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 15px;
+    border-radius: 5px;
+    display: none;
+    text-align: center;
+    width: 100%;
+    max-width: 300px;
+    margin-top: 20px;
+}
+
+#result.win {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: green;
+}
+
+#result.lose {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: red;
+}
+
+#result.draw {
+    background-color: #ffeeba;
+    border-color: #ffeeba;
+    color: orange;
+}
+
 
 /*  mobile version */
 

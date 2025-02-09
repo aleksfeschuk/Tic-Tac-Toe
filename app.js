@@ -180,14 +180,14 @@ function checkWinner() {
         const [a, b, c] = combination;
         if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
             gameActive = false;
-            infoDisplay.textContent = `${players[boardState[a]]} Wins!`;
+            updateResult('win');
             return;
         }
     }
 
     if(!boardState.includes("")) {
         gameActive = false;
-        infoDisplay.textContent = "It's a Draw!";
+        updateResult('draw');
     }
 }
 
@@ -201,7 +201,25 @@ function restartGame() {
     createBoard();
     infoDisplay.textContent = `${players[currentPlayer]}'s turn`;
 
+    document.getElementById('result').style.display = 'none';
+
     if (vsComputerCheckbox.checked && currentPlayer === "cross") {
         setTimeout(computerMove, 500);
+    }
+}
+
+function updateResult(result) {
+    const resultDiv = document.getElementById('result');
+    resultDiv.style.display = 'block' // show the result;
+
+    if (result === 'win') {
+        resultDiv.textContent = `${players['cross']} Wins!`;
+        resultDiv.className = 'result win';
+    } else if (result === 'lose') {
+        resultDiv.textContent = `${players['circle']} Wins!`;
+        resultDiv.className = 'result lose';
+    } else {
+        resultDiv.textContent = "It's a Draw!";
+        resultDiv.className = 'result draw';
     }
 }
