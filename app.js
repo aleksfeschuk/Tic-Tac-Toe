@@ -142,3 +142,41 @@ function minimax(board, player) { //writing artificial intelligence in the game
 
     return bestMove;
 }
+
+
+function checkWin(board, player) {
+    return winningCombinations.some(combination =>
+        combination.every(index => board[index] === player)
+    );
+}
+
+function checkWinner() {
+    for (const combination of winningCombinations) {
+        const [a, b, c] = combination;
+        if (boardState[a] && boardState[a] === boardState[b] && boardState[a] === boardState[c]) {
+            gameActive = false;
+            infoDisplay.textContent = `${players[boardState[a]]} Wins!`;
+            return;
+        }
+    }
+
+    if(!boardState.includes("")) {
+        gameActive = false;
+        infoDisplay.textContent = "It's a Draw!";
+    }
+}
+
+
+
+function restartGame() {
+    gameActive = true;
+
+    currentPlayer = currentPlayer === "circle" ? "cross" : "circle";
+
+    createBoard();
+    infoDisplay.textContent = `${players[currentPlayer]}'s turn`;
+
+    if (vsComputerCheckbox.checked && currentPlayer === "cross") {
+        setTimeout(computerMove, 1000);
+    }
+}
