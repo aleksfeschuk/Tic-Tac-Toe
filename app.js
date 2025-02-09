@@ -72,4 +72,37 @@ function handleClick(e) { // This function is called when you click on a cell an
     }
 }
 
+function placeSymbol(cell, index) {
+    if (boardState[index] !== "") return;
 
+    const symbol = document.createElement('div');
+
+    if (currentPlayer === "circle") {
+        symbol.classList.add('circle');
+        boardState[index] = 'circle';
+        currentPlayer = 'cross';
+    } else {
+        symbol.classList.add('cross');
+        boardState[index] = 'cross';
+        currentPlayer = 'circle';
+    }
+
+    cell.append(symbol);
+    checkWinner();
+
+    if (gameActive) {
+        infoDisplay.textContent = `${players[currentPlayer]}'s turn`;
+    }
+}
+
+function computerMove() {
+    if (!gameActive) return; // add new rows
+    const bestMove = minimax(boardState, "cross").index;
+
+    if(bestMove !== undefined) {
+        const cell = document.querySelector(`[data-index="${bestMove}]`);
+        setTimeout(() => {
+            placeSymbol(cell, bestMove);
+        }, 1000)
+    }
+}
