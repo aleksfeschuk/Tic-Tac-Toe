@@ -7,6 +7,7 @@ const restartButton = document.querySelector("#restartGame");
 const player1Input = document.querySelector("#player1");
 const player2Input = document.querySelector("#player2");
 const vsComputerCheckbox = document.querySelector("#vsComputer");
+const difficultySelect = document.querySelector("#difficulty");
 
 const startCells = ['', '', '','', '', '', '', '', ''];
 let boardState = [...startCells];  //Copy of the array for tracking moves
@@ -97,15 +98,39 @@ function placeSymbol(cell, index) {
 
 function computerMove() {
     if (!gameActive) return; // add new rows
-    const bestMove = minimax(boardState, "cross").index;
+    let bestMove;
+    const difficulty = difficultySelect.value;
+
+    if (difficulty === "easy") {
+        const emptyCells = boardState.map((val, index) => val === "" ? index : -1).filter(index => index !== -1);
+        bestMove = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+    } else if (difficulty === "medium") {
+        bestMove = Math.random() < 0.5 ? minimax(boardState, "cross").index : getRandomMove();
+    } else {
+        bestMove = minimax(boardState, "cross").index;
+    }
+
+    // Implementation of the logic for selecting a move for a computer depending on the selected level of difficulty^^
+
 
     if(bestMove !== undefined) {
-        const cell = document.querySelector(`[data-index="${bestMove}]`);
+        const cell = document.querySelector(`[data-index="${bestMove}"]`);
         setTimeout(() => {
             placeSymbol(cell, bestMove);
         }, 1000)
     }
 }
+
+
+// we look for a random move for the computer when it plays on an easy or medium difficulty level
+function getRandomMove() {
+    const emptyCells = boardState
+        .map((val, index) => val === "" ? index : -1)
+        .filter(index => index !== -1);
+    return emptyCells.length > 0 ? emptyCells[Math.floor(Math.random() * emptyCells.length)] : undefined;
+}
+
+
 
 function minimax(board, player) { //writing artificial intelligence in the game
     
@@ -177,6 +202,6 @@ function restartGame() {
     infoDisplay.textContent = `${players[currentPlayer]}'s turn`;
 
     if (vsComputerCheckbox.checked && currentPlayer === "cross") {
-        setTimeout(computerMove, 1000);
+        setTimeout(computerMove, 500);
     }
 }
