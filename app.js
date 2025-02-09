@@ -106,3 +106,39 @@ function computerMove() {
         }, 1000)
     }
 }
+
+function minimax(board, player) { //writing artificial intelligence in the game
+    
+    const newBoard = [...board];
+    const emptyCells = newBoard.map((value, index) => value === "" ? index : -1).filter(index => index !== -1);
+    const opponent = player === "cross" ? 'circle' : 'cross';
+
+    if (checkWin(newBoard, 'cross')) return {score: 10};
+    if (checkWin(newBoard, 'circle')) return {score: -10};
+    if (emptyCells.length === 0) return { score: 0};
+
+    let bestMove = {score: player === 'cross' ? -Infinity : Infinity, index: null};
+
+    for (let index of emptyCells) {
+        newBoard[index] = player;
+
+        let result = minimax(newBoard, opponent);
+        let moveScore = result.score;
+
+        newBoard[index] = '';
+
+        if (player === 'cross') {
+            if (moveScore > bestMove.score) {
+                bestMove.score = moveScore;
+                bestMove.index = index;
+            } 
+        } else {
+            if (moveScore < bestMove.score) {
+                bestMove.score = moveScore;
+                bestMove.index = index;
+            }
+        }
+    }
+
+    return bestMove;
+}
