@@ -51,6 +51,12 @@ function startGame() {
     localStorage.setItem('player1', player1);
     localStorage.setItem('player2', player2);
 
+    if (vsComputerCheckbox.checked) {
+        players = {circle: player1, cross: "Computer"};
+    } else {
+        players = {circle: player1, cross: player2 };
+    }
+
     players = {circle: player1, cross: vsComputerCheckbox.checked ? "Computer" : player2};
 
     gameActive = true;
@@ -100,17 +106,18 @@ function placeSymbol(cell, index) {
     if (currentPlayer === "circle") {
         symbol.classList.add('circle');
         boardState[index] = 'circle';
-        currentPlayer = 'cross';
+        // currentPlayer = 'cross';
     } else {
         symbol.classList.add('cross');
         boardState[index] = 'cross';
-        currentPlayer = 'circle';
+        // currentPlayer = 'circle';
     }
 
     cell.append(symbol);
     checkWinner();
 
     if (gameActive) {
+        currentPlayer = currentPlayer === "circle" ? "cross" : 'circle'
         infoDisplay.textContent = `${players[currentPlayer]}'s turn`;
     }
 }
@@ -213,6 +220,15 @@ function checkWinner() {
 
 
 function restartGame() {
+    const player1 = localStorage.getItem('player1') || "Player 1";
+    const player2 = localStorage.getItem('player2') || "Player 2";
+
+    if (vsComputerCheckbox.checked) {
+        players = {circle: player1, cross: "Computer"};
+    } else {
+        players = {circle: player1, cross: player2};
+    }
+
     gameActive = true;
 
     currentPlayer = currentPlayer === "circle" ? "cross" : "circle";
