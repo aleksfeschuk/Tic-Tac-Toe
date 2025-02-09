@@ -8,6 +8,7 @@ const player1Input = document.querySelector("#player1");
 const player2Input = document.querySelector("#player2");
 const vsComputerCheckbox = document.querySelector("#vsComputer");
 const difficultySelect = document.querySelector("#difficulty");
+const modalMessage = document.querySelector("#modal-message");
 
 const startCells = ['', '', '','', '', '', '', '', ''];
 let boardState = [...startCells];  //Copy of the array for tracking moves
@@ -209,17 +210,30 @@ function restartGame() {
 }
 
 function updateResult(result) {
-    const resultDiv = document.getElementById('result');
-    resultDiv.style.display = 'block' // show the result;
+    const modal = document.getElementById('modal');
+    const modalMessage = document.querySelector("#modal-message"); // show the result;
+
+    if (!modal || !modalMessage) {
+        console.log("Modal or ModalMessage not found!");
+        return
+    }
+
 
     if (result === 'win') {
-        resultDiv.textContent = `${players['cross']} Wins!`;
-        resultDiv.className = 'result win';
+        modalMessage.textContent = `${players[currentPlayer]} Wins!`;
     } else if (result === 'lose') {
-        resultDiv.textContent = `${players['circle']} Wins!`;
-        resultDiv.className = 'result lose';
+        const winner = currentPlayer === 'cross' ? 'circle' : 'cross';
+        modalMessage.textContent = `${players[winner]} Wins!`;
     } else {
-        resultDiv.textContent = "It's a Draw!";
-        resultDiv.className = 'result draw';
+        modalMessage.textContent = "It's a Draw!";
     }
+
+    modal.style.display = 'flex';
 }
+
+function closeModal() {
+    const modal = document.querySelector("#modal");
+    modal.style.display = "none";
+}
+
+document.querySelector(".close").addEventListener("click", closeModal);
