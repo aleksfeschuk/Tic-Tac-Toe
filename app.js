@@ -27,15 +27,33 @@ const winningCombinations = [
 
 startButton.addEventListener('click', startGame);
 restartButton.addEventListener('click', restartGame);
+ 
+
+document.addEventListener("DOMContentLoaded", function() {
+    const savedPlayer1 = localStorage.getItem('player1');
+    const savedPlayer2 = localStorage.getItem('player2');
+
+    if (savedPlayer1) {
+        player1Input.value = savedPlayer1;
+    }
+
+    if (savedPlayer2) {
+        player2Input.value = savedPlayer2;
+    }
+
+    createBoard();
+})
 
 function startGame() {
     const player1 = player1Input.value.trim() || "Player 1";
     const player2 = player2Input.value.trim() || "Player 2";
 
+    localStorage.setItem('player1', player1);
+    localStorage.setItem('player2', player2);
+
     players = {circle: player1, cross: vsComputerCheckbox.checked ? "Computer" : player2};
 
     gameActive = true;
-    
     currentPlayer = currentPlayer === 'circle' ? 'cross' : 'circle';
 
     infoDisplay.textContent = `${players[currentPlayer]}'s turn`;
@@ -221,19 +239,33 @@ function updateResult(result) {
 
     if (result === 'win') {
         modalMessage.textContent = `${players[currentPlayer]} Wins!`;
+        infoDisplay.textContent = `${players[currentPlayer]} Wins!`;
     } else if (result === 'lose') {
         const winner = currentPlayer === 'cross' ? 'circle' : 'cross';
         modalMessage.textContent = `${players[winner]} Wins!`;
+        infoDisplay.textContent = `${players[winner]} Wins!`
     } else {
         modalMessage.textContent = "It's a Draw!";
+        infoDisplay.textContent = "It's a Draw!";
     }
 
     modal.style.display = 'flex';
+
+    gameActive = false;
+    infoDisplay.textContent = "Game Over";
 }
 
 function closeModal() {
     const modal = document.querySelector("#modal");
     modal.style.display = "none";
+
+    localStorage.removeItem('player1');
+    localStorage.removeItem('player2');
+
+    player1Input.value = '';
+    player2Input.value = '';
+
+    restartGame();
 }
 
 document.querySelector(".close").addEventListener("click", closeModal);
