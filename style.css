@@ -161,3 +161,51 @@ h1 {
 .restartGame:hover {
     background-color: #218838;
 }
+
+
+/*  mobile version */
+
+@media screen and (max-width: 480px) {
+    h1 {
+        font-size: 24px;
+    }
+
+    #game-container {
+        width: 90%;
+        padding: 10px;
+    }
+
+    #player-inputs {
+        flex-direction: column;
+        align-items: center;
+        gap: 15px;
+        width: 100%;
+    }
+
+    #player1, #player2, #difficulty {
+        width: 100%;
+        font-size: 14px;
+    }
+
+    #startGame, #restartGame {
+        width: 100%;
+        padding: 12px 0;
+        font-size: 18px;
+    }
+
+    #gameboard {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1;
+    }
+
+    .square {
+        width: 33%;
+        height: 33%;
+    }
+
+    .circle, .cross {
+        height: 80%;
+        width: 80%;
+    }
+}
